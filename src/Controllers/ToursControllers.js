@@ -1,5 +1,6 @@
 
 const ToursModel = require("../Models/TourModel");
+const TourModelEn = require("../Models/TourModelEn");
 const tourReservaModel = require("../Models/TourRModel");
 
 const {detailReservationEmailTours,  notifyReservationAdmin} = require("../utils/Nodemailer")
@@ -18,6 +19,19 @@ const getAllTours = async (req, res) => {
     }
   }
 
+  const getAllToursEn = async (req, res) => {
+    try {
+      const allTours = await TourModelEn.find()  // Obtén todos los tours desde la base de datos
+      // console.log(allTours)
+      res.send({
+        msg: "all tours english",
+        data: allTours,  // Envía los tours obtenidos
+      });
+    } catch (error) {
+      res.status(400).send({ msg: "we couldnt put tours data", error: error });
+    }
+  }
+
   const tourByID = async (req, res) => {
     try {
         // Asegúrate de que 'tour' es el modelo y usa findById
@@ -31,6 +45,21 @@ const getAllTours = async (req, res) => {
     } catch (error) {
         res.status(500).json({ mensaje: 'Error en el servidor', error: error.message });
     }
+};
+
+const tourByIDEn = async (req, res) => {
+  try {
+      // Asegúrate de que 'tour' es el modelo y usa findById
+      const tour = await TourModelEn.findById(req.params.id); 
+      
+      if (!tour) {
+          return res.status(404).json({ mensaje: 'Tour no encontrado' });
+      }
+      res.status(200).json({ msg: "El tour es:", data: tour });
+
+  } catch (error) {
+      res.status(500).json({ mensaje: 'Error en el servidor', error: error.message });
+  }
 };
 
 const crearReservaTour = async (req, res) => {
@@ -116,6 +145,8 @@ const crearReservaTour = async (req, res) => {
   //Exportando controladores para endpoints 
   module.exports = {
     getAllTours,
+    getAllToursEn,
     tourByID,
+    tourByIDEn,
     crearReservaTour
   };

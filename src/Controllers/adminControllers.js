@@ -14,7 +14,7 @@ const formContact = async (req, res) => {
         
     
         await contactForm(mensaje)
-        res.status(201).json({ msg: "correo electronico enviado con exito"});
+        res.status(201).json({ msg: "Mensaje enviado con exito"});
 
     } catch (error) {
         res.status(400).send({ msg: "error al enviar el correo de contacto", error: error.message });
